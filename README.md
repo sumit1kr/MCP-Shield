@@ -88,7 +88,7 @@ sequenceDiagram
     participant U as User
     participant F as Frontend
     participant API as FastAPI
-    participant C as Celery+Agent
+    participant C as Celery Worker
     participant T as Target MCP Server
     U->>F: Paste MCP server URL
     F->>API: POST /scans
@@ -152,6 +152,7 @@ sequenceDiagram
 ```
 ./
     .gitignore
+    LICENSE
     docker-compose.yml
     README.md
     backend/
@@ -167,13 +168,16 @@ sequenceDiagram
             main.py
             models.py
             schemas.py
+            __init__.py
             agent/
                 graph.py
                 prompts.py
                 state.py
+                __init__.py
                 nodes/
                     aggregate_results.py
                     fetch_manifest.py
+                    __init__.py
                     attacks/
                         a01_prompt_injection.py
                         a02_tool_poisoning.py
@@ -182,54 +186,85 @@ sequenceDiagram
                         a05_ssrf_check.py
                         a06_rug_pull.py
                         a07_supply_chain.py
+                        __init__.py
             routers/
                 auth.py
                 reports.py
                 scans.py
+                __init__.py
             services/
                 auth_service.py
                 pdf_service.py
                 report_service.py
                 s3_service.py
                 scan_service.py
+                __init__.py
             tasks/
                 celery_tasks.py
+                __init__.py
         migrations/
+            env.py
+            README
+            script.py.mako
+            versions/
+                2fc3b08883ec_create_initial_tables.py
         tests/
+            conftest.py
             mock_mcp_server.py
             test_auth.py
             test_reports.py
             test_scans.py
+            __init__.py
             test_agent/
                 test_attacks.py
+                __init__.py
     frontend/
         .env.example
         .gitignore
         Dockerfile
         eslint.config.js
         index.html
+        package-lock.json
         package.json
+        postcss.config.js
         tailwind.config.js
         vite.config.js
         public/
+            favicon.svg
+            icons.svg
         src/
+            App.css
             App.jsx
             index.css
             main.jsx
             api/
                 client.js
+            assets/
+                hero.png
+                react.svg
+                vite.svg
             components/
                 Navbar.jsx
+                ProtectedRoute.jsx
                 RiskScoreBadge.jsx
+                RiskScoreCircle.jsx
+                ScanProgressRow.jsx
                 ScanTable.jsx
                 VulnerabilityCard.jsx
+            hooks/
+                useAuth.js
+                useScanStatus.js
             pages/
                 Dashboard.jsx
                 Home.jsx
                 Login.jsx
                 NewScan.jsx
+                PublicReport.jsx
+                Register.jsx
                 Report.jsx
                 ScanProgress.jsx
+            store/
+                authStore.js
 ```
 
 ---
