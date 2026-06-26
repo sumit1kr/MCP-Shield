@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: mcpshield_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mcpshield
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: mcpshield_redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    container_name: mcpshield_backend
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/mcpshield
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET_KEY=generate-32-char-random-string-here-mcp-shield
+      - JWT_ALGORITHM=HS256
+      - GROQ_API_KEY=gsk_placeholder_replace_with_your_own_key
+      - AWS_ACCESS_KEY_ID=aws_temp_dummy_id
+      - AWS_SECRET_ACCESS_KEY=aws_temp_dummy_secret
+      - AWS_S3_BUCKET=mcpshield-reports
+      - AWS_REGION=ap-south-1
+      - ENVIRONMENT=development
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+
+  celery_worker:
+    build: ./backend
+    container_name: mcpshield_celery
+    command: celery -A celery_worker.celery_app worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/mcpshield
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET_KEY=generate-32-char-random-string-here-mcp-shield
+      - JWT_ALGORITHM=HS256
+      - GROQ_API_KEY=gsk_placeholder_replace_with_your_own_key
+      - AWS_ACCESS_KEY_ID=aws_temp_dummy_id
+      - AWS_SECRET_ACCESS_KEY=aws_temp_dummy_secret
+      - AWS_S3_BUCKET=mcpshield-reports
+      - AWS_REGION=ap-south-1
+      - ENVIRONMENT=development
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:

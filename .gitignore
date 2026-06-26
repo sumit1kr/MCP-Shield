@@ -1,0 +1,52 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Database
+*.sqlite3
+*.db
+backend/test.db
+backend/mcpshield.db
+
+# Logs
+*.log
+celerybeat-schedule
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Antigravity / agent artifacts
+.gemini/
+*.brain/
+task.md
+implementation_plan.md
+walkthrough.md
+
+# AWS / Docker
+.aws/
+*.pem
+
+# Local design & agent references
+AGENT_INSTRUCTIONS.md
+mcp-shield-complete/
